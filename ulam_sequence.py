@@ -2,6 +2,8 @@
 
 # https://projecteuler.net/problem=167
 
+import sys
+
 from collections import Counter
 
 def ulam(a, b, k):
@@ -53,8 +55,10 @@ def ulam_sequence(a, b, num_terms):
 
 if __name__ == "__main__":
     a, b, nt = map(int, sys.argv[1:4])
+    print()
     for u in ulam_sequence(a, b, nt):
-        print('{}', end=' ')
+        print('{}'.format(u), end=' ')
+    print('\n')
 
 
 

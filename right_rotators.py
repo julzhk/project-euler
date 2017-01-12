@@ -2,6 +2,8 @@
 
 # https://projecteuler.net/problem=168
 
+import sys
+
 def right_rotation(n):
     s = str(n)
     return int(''.join([c for c in s[-1] + s[:-1]]))
@@ -23,4 +25,4 @@ def right_rotators(int_range=range(11, 10**6)):
 if __name__ == "__main__":
     m = int(sys.argv[1].strip())
     ans = int(str(sum(n for n in right_rotators(int_range=range(11, 10**m))))[-5:])
-    print('Last 5 digits of the sum of all right rotators in the range 10 < n < 10^{}: {}'.format(m, ans))
+    print('\nLast 5 digits of the sum of all right rotators in the range 10 < n < 10^{}: {}\n'.format(m, ans))
