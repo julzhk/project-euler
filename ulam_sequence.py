@@ -12,11 +12,11 @@ def ulam(a, b, k):
  
         U(a, b, 1) = a
         U(a, b, 2) = b
-        U(a, b, k: k > 2) = min{U(k-i)+U(k-j) for i, j < k s.t. i != j and sum is unique}
+        U(a, b, k: k > 2) = min{U(a,b,k-i)+U(a,b,k-j) for i, j < k such that i != j and sum is unique}
  
-        e.g. first 16 terms of the U(2, 5) sequence:
+        e.g. first 25 terms of the U(2, 5) sequence:
  
-            2, 5, 7, 9, 11, 12, 13, 15, 19, 23, 27, 29, 35, 37, 41, 43, ...
+            2, 5, 7, 9, 11, 12, 13, 15, 19, 23, 27, 29, 35, 37, 41, 43, 45, 49, 51, 55, 61, 67, 69, 71, 79 ...
     """
     if k == 1:
         return a
