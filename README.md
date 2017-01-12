@@ -1,4 +1,4 @@
-# project-euler
+# Project Euler
 
 Python solutions to selected Project Euler problems
 
