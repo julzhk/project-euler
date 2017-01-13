@@ -5,8 +5,15 @@
 import sys
 
 def right_rotation(n):
-    s = str(n)
-    return int(''.join([c for c in s[-1] + s[:-1]]))
+    m = n
+    d = m % 10
+    m //= 10
+    t = m
+    i = 0
+    while m:
+        i += 1
+        m //= 10
+    return d*10**(i) + t
 
 def is_right_rotator(n):
     """
