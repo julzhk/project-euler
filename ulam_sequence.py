@@ -53,7 +53,7 @@ def ulam_sequence(a, b, num_terms):
     for k in range(1, num_terms + 1):
         yield ulam(a, b, k)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     a, b, nt = map(int, sys.argv[1:4])
     print()
     for u in ulam_sequence(a, b, nt):

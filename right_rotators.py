@@ -29,7 +29,7 @@ def right_rotators(int_range=range(11, 10**6)):
             yield n
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     m = int(sys.argv[1].strip())
     ans = int(str(sum(n for n in right_rotators(int_range=range(11, 10**m))))[-5:])
     print('\nLast 5 digits of the sum of all right rotators in the range 10 < n < 10^{}: {}\n'.format(m, ans))
