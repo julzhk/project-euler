@@ -2,6 +2,11 @@
 
 # https://projecteuler.net/problem=20
 
+# The factorial function f(n) is defined for non-negative integers:
+# it is the product of the first n consecutive integers 1, 2, ... , n 
+# when n is positive, and 1 when n is 0. e.g. 4! = 4 x 3 x 2 x 1 = 24
+# and 0! = 1 by definition.
+
 import sys
 
 def digits(n):
