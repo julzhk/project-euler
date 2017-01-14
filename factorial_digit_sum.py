@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-
+#
 # https://projecteuler.net/problem=20
-
+#
 # The factorial function f(n) is defined for non-negative integers:
 # it is the product of the first n consecutive integers 1, 2, ... , n 
 # when n is positive, and 1 when n is 0. e.g. 4! = 4 x 3 x 2 x 1 = 24
@@ -11,12 +11,10 @@
 
 import sys
 
-def digits(n):
-    m = n
-    while m:
-        d = m % 10
-        yield d
-        m //= 10
+from utils import (
+    digits,
+    factorial,
+)
 
 def digit_sum(n):
     if n < 0:
@@ -24,14 +22,6 @@ def digit_sum(n):
     elif n in range(0, 10):
         return n
     return sum(d for d in digits(n))
-
-def factorial(n):
-    if n in [0, 1]:
-        return n
-    fact = 1
-    for k in reversed(range(1, n + 1)):
-        fact *= k
-    return fact
 
 def factorial_digit_sum(n):
     return digit_sum(factorial(n))

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-
+#
 # https://projecteuler.net/problem=168
 
 import sys
 
-def right_rotation(n):
+def right_rotate(n):
     m = n
     d = m % 10
     m //= 10
@@ -21,7 +21,7 @@ def is_right_rotator(n):
     of its right-rotation, e.g. 142857 divides its right rotation
     714285.    
     """
-    return (right_rotation(n) % n == 0)
+    return (right_rotate(n) % n == 0)
 
 def right_rotators(int_range=range(11, 10**6)):
     for n in int_range:

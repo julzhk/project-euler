@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-
+#
 # https://projecteuler.net/problem=580
-
+#
 # A Hilbert number is any positive integer of the form 4k+1 for integer k≥0. We
 # shall define a squarefree Hilbert number as a Hilbert number which is not
 # divisible by the square of any Hilbert number other than one. For example, 117
