@@ -30,6 +30,6 @@ if __name__ == '__main__':
     n = int(sys.argv[1].strip())
     fact = factorial(n)
     digs = digits(fact)
-    digit_sum_str = ' + '.join(str(d) for d in digs)[::-1]
+    digit_sum_str = ' + '.join(str(d) for d in digs)
     fact_digit_sum = digit_sum(n)
     print('\n{}! = {}, digit sum = {} = {}\n'.format(n, fact, digit_sum_str, fact_digit_sum))

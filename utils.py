@@ -1,21 +1,14 @@
-def digits(n, pos=False):
+from itertools import permutations
+
+def digits(n, reverse=False):
     """
-        Generates the sequence of digits of a given integer n,
-        starting from the least significant digit. If pos is
-        True then it returns a sequence of digits and their
-        relative positions in the decimal expansion of n.
+        Generates the sequence of digits of a given integer n, starting from
+        the most significant digit, by default. If reverse is True then the
+        sequence is generated from the least significant digit.
     """
-    m = n
-    if pos:
-        i = 0
-    while m:
-        d = m % 10
-        if pos:
-            yield d, i
-            i += 1
-        else:
-            yield d
-        m //= 10
+    s = str(n) if not reverse else str(n)[::-1]
+    for c in s:
+        yield int(c)
 
 
 def int_from_digits(digits):
@@ -26,13 +19,28 @@ def int_from_digits(digits):
 
             [1,2,3] --> 1x10^2 + 2x10^1 + 3x10^0 = 123
     """
-    digs = reversed(digits) if isinstance(digits, list) else digits
-    i = 0
-    n = 0        
-    for d in digs:
-        n += d*10**i
-        i += 1
-    return n
+    dgs = list(digits)
+    n = len(dgs)
+    return sum(d*10**i for d, i in zip(dgs, reversed(range(n))))
+
+
+def int_permutations(n):
+    """
+        Generates a sequence of permutations of a given positive integer n in
+        lexicographic order.
+    """
+    for p in permutations(digits(n)):
+        yield int_from_digits(q)
+
+
+def concatenate(int_seq):
+    """
+        Produces an integer which is a "concatenation" of the digits of a
+        sequence of positive integers, e.g.
+
+            [12, 345, 6789] -> 123456789
+    """
+    return int(''.join([str(n) for n in int_seq]))
 
 
 def product(int_seq):
@@ -115,7 +123,7 @@ def rotations(n):
     """
         Generates a sequence of (right) rotations of a given positive integer n.
     """
-    digs = list(digits(n))
+    digs = list(digits(n, reverse=True))
     n = len(digs)
     for i in range(n):
         yield sum(digs[(j + i) % n] * 10**j for j in range(n))
