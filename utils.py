@@ -147,4 +147,70 @@ def fibonacci():
         a, b = b, a + b
 
 
+def integerise(f):
+    """
+        Turns a float into an integer if it is an integer, otherwise returns
+        the same float.
+    """
+    return int(f) if f.is_integer() else f
 
+
+def complexify(r):
+    """
+        Turns a real number into a complex number if it not complex, otherwise
+        returns the same number.
+    """
+    return complex(r) if not type(r) == complex else r
+
+
+def complex_format(z):
+    """
+        Formats a complex number z = a + bi to ensure that real and/or
+        imaginary parts a and b are displayed as integers if they are actually
+        integers. This is because the display of Python native complex numbers
+        is a bit inconsistent: complex numbers with a 0 real part can sometimes
+        be displayed with the real part as -0. Also, complex numbers such as
+        1 - 2.0j are better read as 1 - 2j.
+    """
+    if type(z) == int:
+        return complex(z)
+    elif type(z) == float:
+            return complex(integerise(z))
+    elif type(z) == complex:
+        a, b = map(integerise, [z.real, z.imag])
+        return complex(a, b)
+
+
+def complex_reflections(z):
+    """
+        Generates a sequence of reflections of a complex number z = a + bi in the real
+        and imaginary planes:
+
+            z = a + bi -> a + bi, a - bi, -a - bi, -a + bi
+    """
+    z = complex_format(z)
+    a, b = map(integerise, [z.real, z.imag])
+    if a and b:
+        yield z
+        yield z.conjugate()
+        yield -z
+        yield -z.conjugate()
+    elif a and not b:
+        yield a
+        yield -a
+    elif b and not a:
+        yield complex(0, b)
+        yield complex(0, b).conjugate()
+
+
+def complex_divide(z1, z2):
+    """
+        Divides complex numbers using explicit formulae for the real and
+        imaginary parts of the quotient. Python supports division of native
+        complex numbers but this is reported to be inconsistent for large
+        operands.
+    """
+    a, b, c, d = z1.real, z1.imag, z2.real, z2.imag
+    m = c**2 + d**2
+    u, v = map(integerise, [(a*c + b*d) / m, (b*c - a*d) / m])
+    return complex(u, v)
