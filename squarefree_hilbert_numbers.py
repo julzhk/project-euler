@@ -22,7 +22,8 @@ def is_hilbert_number(n):
 
 def is_hilbert_square(n):
     """
-    I define a Hilbert square as the square of a Hilbert number.
+    I define a Hilbert square as the square of a Hilbert number - this is
+    necessarily also a Hilbert number.
 
     If n is a Hilbert square it has the form
 

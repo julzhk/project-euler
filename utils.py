@@ -95,29 +95,29 @@ def is_prime(n):
     return True
 
 
-def primes(num_terms=None, int_range=None, ubound=None):
+def primes(number=None, within=None, below=None):
     """
-        Generates all primes. Three mutually exclusive options exist: num_terms
+        Generates all primes. Three mutually exclusive options exist: 'number'
         indicates the number of consecutive primes to generate, starting from 2;
-        int_range indicates the range of positive integers within which the
-        primes should be generated; ubound indicates a strict upper bound for
+        'within' indicates the range of positive integers within which the
+        primes should be generated; 'below' indicates a strict upper bound for
         the generated primes.
     """    
-    if num_terms or int_range or ubound:
-        if num_terms:
+    if number or within or below:
+        if number:
             n = 2
             i = 1
-            while i <= num_terms:
+            while i <= number:
                 if is_prime(n):
                     yield n
                     i += 1
                 n += 1
-        elif int_range:
-            for n in int_range:
+        elif within:
+            for n in within:
                 if is_prime(n):
                     yield n
         else:
-            for n in range(1, ubound):
+            for n in range(1, below):
                 if is_prime(n):
                     yield n
         return
