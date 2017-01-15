@@ -24,6 +24,16 @@ def int_from_digits(digits):
     return sum(d*10**i for d, i in zip(dgs, reversed(range(n))))
 
 
+def rotations(n):
+    """
+        Generates a sequence of (right) rotations of a given positive integer n.
+    """
+    digs = list(digits(n, reverse=True))
+    n = len(digs)
+    for i in range(n):
+        yield sum(digs[(j + i) % n] * 10**j for j in range(n))
+
+
 def int_permutations(n):
     """
         Generates a sequence of permutations of a given positive integer n in
@@ -116,14 +126,25 @@ def primes(num_terms=None, int_range=None, ubound=None):
     while True:
         if is_prime(n):
             yield n
-        n += 1        
+        n += 1
 
 
-def rotations(n):
+def fibonacci():
     """
-        Generates a sequence of (right) rotations of a given positive integer n.
+        Generates the Fibonacci sequence defined by
+
+            f(1) = 1, f(2) = 1, f(n) = f(n - 1) + f(n - 2) for n > 2
+
+        The first 10 terms are
+
+            1, 1, 2, 3, 5, 8, 13, 21, 34, 55
     """
-    digs = list(digits(n, reverse=True))
-    n = len(digs)
-    for i in range(n):
-        yield sum(digs[(j + i) % n] * 10**j for j in range(n))
+    a = b = 1
+    yield a
+    yield b
+    while True:
+        yield a + b
+        a, b = b, a + b
+
+
+
