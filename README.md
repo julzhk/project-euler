@@ -1,5 +1,5 @@
 # Project Euler
 
-Python solutions to selected Project Euler problems
+Python solutions related to selected Project Euler problems.
 
 https://projecteuler.net/
