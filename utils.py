@@ -68,7 +68,7 @@ def factorial(n):
         Iteratively calculates factorial of n.
     """
     if n in [0, 1]:
-        return n
+        return 1
     fact = 1
     for k in reversed(range(1, n + 1)):
         fact *= k
