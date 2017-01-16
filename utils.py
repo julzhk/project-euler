@@ -114,6 +114,7 @@ def primes(up_to_index=None, index_range=None, within=None, below=None):
                     yield n
                     i += 1
                 n += 1
+            return
         elif index_range:
             n = 2
             i = 1
@@ -126,15 +127,17 @@ def primes(up_to_index=None, index_range=None, within=None, below=None):
                     yield n
                     i += 1
                 n += 1
+            return
         elif within:
             for n in within:
                 if is_prime(n):
                     yield n
+            return
         else:
             for n in range(1, below):
                 if is_prime(n):
                     yield n
-        return
+            return
 
     n = 2
     while True:
