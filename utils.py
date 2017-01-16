@@ -53,28 +53,6 @@ def concatenate(int_seq):
     return int(''.join([str(n) for n in int_seq]))
 
 
-def product(int_seq):
-    """
-        Returns the product of a sequence of integers.
-    """
-    t = 1
-    for i in int_seq:
-        t *= i
-    return t
-
-
-def factorial(n):
-    """
-        Iteratively calculates factorial of n.
-    """
-    if n in [0, 1]:
-        return 1
-    fact = 1
-    for k in reversed(range(1, n + 1)):
-        fact *= k
-    return fact
-
-
 def is_prime(n):
     """
         Simple but fairly quick primality checker.
@@ -156,6 +134,26 @@ def fibonacci():
     while True:
         yield a + b
         a, b = b, a + b
+
+
+def polygonal_number(n, k):
+    """
+        Returns the kth n-gonal number P(n, k) given by the following formula:
+
+            P(n, k) = [k^2(n - 2) - n(k - 3)] / 2
+    """
+    return int((k**2*(n - 2) - k*(n - 4)) / (2))
+
+
+def is_polygonal_number(p, n=None, k=None):
+    if k == 1:
+        return p == 1
+    if n:
+        k = (((n - 4) + math.sqrt((n - 4)**2 + 8*p*(n - 2))) / (2*(n - 2)))
+        return int(k) if k.is_integer() else False
+    elif k:
+        n = (2*k**2 - 4*k + 2*p) / (k*(k - 1))
+        return int(n) if n.is_integer() else False
 
 
 def integerise(f):

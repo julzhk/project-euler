@@ -11,10 +11,9 @@
 
 import sys
 
-from utils import (
-    digits,
-    factorial,
-)
+from math import factorial
+
+from utils import digits
 
 def digit_sum(n):
     if n < 0:
