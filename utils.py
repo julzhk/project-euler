@@ -95,17 +95,16 @@ def is_prime(n):
     return True
 
 
-def primes(up_to_index=None, index_range=None, within=None, below=None):
+def primes(up_to_index=None, index_range=None, within=None):
     """
-        Generates all primes. Four mutually exclusive options exist:
+        Generates all primes. Three mutually exclusive options exist:
         'up_to_index' indicates the number of consecutive primes to generate,
         starting from 2; 'index_range' indicates the range of indices for the
         primes to be generated, e.g. the 50th to 100th primes; 'within'
         indicates the range of positive integers within which the primes should
-        be generated; 'below' indicates a strict upper bound for the generated
-        primes.
+        be generated.
     """    
-    if up_to_index or index_range or within or below:
+    if up_to_index or index_range or within:
         if up_to_index:
             n = 2
             i = 1
@@ -130,11 +129,6 @@ def primes(up_to_index=None, index_range=None, within=None, below=None):
             return
         elif within:
             for n in within:
-                if is_prime(n):
-                    yield n
-            return
-        else:
-            for n in range(1, below):
                 if is_prime(n):
                     yield n
             return
