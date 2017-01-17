@@ -1,10 +1,14 @@
 from itertools import permutations
+from functools import partial
 
 def digits(n, reverse=False):
     """
         Generates the sequence of digits of a given integer n, starting from
         the most significant digit, by default. If reverse is True then the
-        sequence is generated from the least significant digit.
+        sequence is generated from the least significant digit, e.g.
+
+            123 -> 1, 2, 3      (with no reverse or reverse=False)
+            123 -> 3, 2, 1      (with reverse=True)
     """
     s = str(n) if not reverse else str(n)[::-1]
     for c in s:
@@ -13,11 +17,13 @@ def digits(n, reverse=False):
 
 def int_from_digits(digits):
     """
-        Returns a positive integer n which is a decimal expansion
-        of an iterable of digits in descending order from the most
-        significant digit, e.g.
+        Returns a positive integer n which is a decimal expansion of a
+        sequence of digits in descending order from the most significant
+        digit. The input can be a sequence (list, tuple) or a generator,
+        e.g.
 
-            [1,2,3] --> 1x10^2 + 2x10^1 + 3x10^0 = 123
+            [1,2,3] -> 1x10^2 + 2x10^1 + 3x10^0 = 123
+            (2, 4, 5, 1) -> 2x10^3 + 4x10^2 + 5x10 + 1x10^0 = 2451
     """
     dgs = list(digits)
     n = len(dgs)
@@ -26,7 +32,9 @@ def int_from_digits(digits):
 
 def rotations(n):
     """
-        Generates a sequence of (right) rotations of a given positive integer n.
+        Generates a sequence of (right) rotations of a positive integer n, e.g.
+
+            1234 -> 4123, 3412, 2341, 1234
     """
     digs = list(digits(n, reverse=True))
     n = len(digs)
@@ -37,10 +45,12 @@ def rotations(n):
 def int_permutations(n):
     """
         Generates a sequence of permutations of a given positive integer n in
-        lexicographic order.
+        lexicographic order, e.g.
+
+            123 -> 123, 132, 213, 231, 312, 321
     """
     for p in permutations(digits(n)):
-        yield int_from_digits(q)
+        yield int_from_digits(p)
 
 
 def concatenate(int_seq):
@@ -73,43 +83,32 @@ def is_prime(n):
     return True
 
 
-def primes(up_to_index=None, index_range=None, within=None):
+def primes(index_range=None, int_range=None):
     """
-        Generates all primes. Three mutually exclusive options exist:
-        'up_to_index' indicates the number of consecutive primes to generate,
-        starting from 2; 'index_range' indicates the range of indices for the
-        primes to be generated, e.g. the 50th to 100th primes; 'within'
-        indicates the range of positive integers within which the primes should
-        be generated.
+        Generates all primes, by default. Can also generate primes within a
+        given index range (e.g. the first 50 primes, or the 20th to the 50th
+        primes) by using the 'index_range' option, or a given interval for
+        the primes (e.g. primes between 100 and 1000) by using the
+        'int_range' option.
     """    
-    if up_to_index or index_range or within:
-        if up_to_index:
-            n = 2
-            i = 1
-            while i <= up_to_index:
-                if is_prime(n):
-                    yield n
-                    i += 1
-                n += 1
-            return
-        elif index_range:
-            n = 2
-            i = 1
-            while i not in index_range:
-                if is_prime(n):
-                    i += 1
-                n += 1
-            while i in index_range:
-                if is_prime(n):
-                    yield n
-                    i += 1
-                n += 1
-            return
-        elif within:
-            for n in within:
-                if is_prime(n):
-                    yield n
-            return
+    if index_range:
+        n = 2
+        i = 1
+        while i not in index_range:
+            if is_prime(n):
+                i += 1
+            n += 1
+        while i in index_range:
+            if is_prime(n):
+                yield n
+                i += 1
+            n += 1
+        return
+    elif int_range:
+        for n in int_range:
+            if is_prime(n):
+                yield n
+        return
 
     n = 2
     while True:
@@ -140,20 +139,62 @@ def polygonal_number(n, k):
     """
         Returns the kth n-gonal number P(n, k) given by the following formula:
 
-            P(n, k) = [k^2(n - 2) - n(k - 3)] / 2
+            P(n, k) = [(n - 2)k^2 - (k - 4)n] / 2
     """
-    return int((k**2*(n - 2) - k*(n - 4)) / (2))
+    return int(((n - 2)*k**2 - (n - 4)*k) / (2))
 
 
-def is_polygonal_number(p, n=None, k=None):
-    if k == 1:
-        return p == 1
-    if n:
-        k = (((n - 4) + math.sqrt((n - 4)**2 + 8*p*(n - 2))) / (2*(n - 2)))
-        return int(k) if k.is_integer() else False
-    elif k:
-        n = (2*k**2 - 4*k + 2*p) / (k*(k - 1))
-        return int(n) if n.is_integer() else False
+def n_polygonal_number_func(n):
+    """
+        Returns a function to generate the n-gonal numbers for a given n - 
+        mathematically this function is obtained by restricting the general
+        function, which is a function of two variables n and k, to the given
+        value of n, e.g. to have a triangular number generating function do
+        the following
+
+            >>> tri = n_polygonal_number_func(3)
+
+            >>> tri
+            >>> functools.partial(<function polygonal_number at 0x10f53bea0>, n=3)
+            
+            >>> [tri(k=i) for i in range(1, 11)]
+
+            >>> [1, 3, 6, 10, 15, 21, 28, 36, 45, 55]
+    """
+
+    return partial(polygonal_number, n=n)
+
+
+def is_polygonal_number(p, n):
+    """
+        Checks whether a given number p is a polygonal number for some n, i.e.
+        whether it is an n-gonal number for some n > 2.
+    """
+    if p == 1:
+        return True
+    k = (((n - 4) + math.sqrt((n - 4)**2 + 8*p*(n - 2))) / (2*(n - 2)))
+    return int(k) if k.is_integer() else False
+
+
+def is_d_cyclic_set(int_seq, d):
+    """
+        Checks whether a given set (or sequence) of positive integers has the
+        d-cyclic property, namely that there exists an (ordered) sequence of
+        all the integers from this set such that for any two consecutive
+        integers in the sequence the d least significant digits of the first
+        integer are equal to the d most significant digits of the second,
+        this being true for the last and first integers as well, e.g. the
+        set {2882, 8128, 8281} is 2-cyclic because the sequence
+
+            8128, 2882, 8281
+
+        has the 2-cyclic property.
+    """
+    m = len(int_seq)
+    for p in permutations(int_seq):
+        if all(str(p[i])[-d:] == str(p[(i+1) % m])[:d] for i in range(m - 1)):
+            return True
+    return False
 
 
 def integerise(f):
@@ -200,17 +241,17 @@ def complex_reflections(z):
     z = complex_format(z)
     a, b = map(integerise, [z.real, z.imag])
     if a and b:
-        yield z
         yield z.conjugate()
         yield -z
         yield -z.conjugate()
+        yield z
     elif a and not b:
-        yield a
         yield -a
+        yield a
     elif b and not a:
-        yield complex(0, b)
         yield complex(0, b).conjugate()
-
+        yield complex(0, b)
+        
 
 def complex_divide(z1, z2):
     """
