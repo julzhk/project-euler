@@ -1,4 +1,9 @@
-from itertools import permutations
+import math
+
+from itertools import (
+    permutations,
+    starmap,
+)
 from functools import partial
 
 def digits(n, reverse=False):
@@ -176,6 +181,23 @@ def is_polygonal_number(p, n):
     return int(k) if k.is_integer() else False
 
 
+def is_polygonal_representative_set(int_set, poly_reps):
+    """
+        Checks whether a given set of positive integers contains polygonal
+        numbers of every type (n) specified in the set (or sequence)
+        'poly_reps', e.g. whether for every value of n in 'poly_reps' there
+        is an n-gonal number in the given set of integers, e.g. the set
+        {2882, 8128, 8281} contains a triangular number (8128), a square number
+        (8281) and a pentagonal number (8128).
+    """
+    return any(
+        (
+            False not in starmap(is_polygonal_number, zip(int_set, poly_rep_perm))
+            for poly_rep_perm in permutations(poly_reps)
+        )
+    )
+
+
 def is_d_cyclic_set(int_seq, d):
     """
         Checks whether a given set (or sequence) of positive integers has the
@@ -192,7 +214,7 @@ def is_d_cyclic_set(int_seq, d):
     """
     m = len(int_seq)
     for p in permutations(int_seq):
-        if all(str(p[i])[-d:] == str(p[(i+1) % m])[:d] for i in range(m - 1)):
+        if all(str(p[i])[-d:] == str(p[(i+1) % m])[:d] for i in range(m)):
             return True
     return False
 
