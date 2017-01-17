@@ -170,14 +170,14 @@ def n_polygonal_number_func(n):
     return partial(polygonal_number, n=n)
 
 
-def is_polygonal_number(p, n):
+def is_polygonal_number(m, n):
     """
-        Checks whether a given number p is a polygonal number for some n, i.e.
+        Checks whether a given number m is a polygonal number for some n, i.e.
         whether it is an n-gonal number for some n > 2.
     """
-    if p == 1:
+    if m == 1:
         return True
-    k = (((n - 4) + math.sqrt((n - 4)**2 + 8*p*(n - 2))) / (2*(n - 2)))
+    k = (((n - 4) + math.sqrt((n - 4)**2 + 8*m*(n - 2))) / (2*(n - 2)))
     return int(k) if k.is_integer() else False
 
 

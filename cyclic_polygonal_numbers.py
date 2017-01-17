@@ -35,22 +35,26 @@ from utils import (
     is_polygonal_representative_set,
 )
 
+from time import sleep
+
 if __name__ == '__main__':
     print(
         'Searching for a 2-cyclic set of six 4-digit integers which is '
         '{3,4,5,6,7,8}-polygonal representative ...'
     )
+    sleep(3)
     print(
-        'This could take a while as there are 943,566,389766 (approx. 9.43 '
-        'billion) 4-digit integer sets which have at least one '
-        'polygonal representative in {3,4,5,6,7,8}'
+        '\nThis could take a while as there are 943,566,389766 (approx. 9.43 '
+        'billion) 4-digit integer sets containing triangular, square, '
+        'pentagonal, hexagonal, heptagonal or octagonal numbers.\n'
     )
+    sleep(3)
     d = 2
     poly_reps = set(range(3, 9))
     candidates = (m for m in range(10**3, 10**4) if any(is_polygonal_number(m, n) for n in poly_reps))
     result_set = None
     for i, int_set in enumerate(combinations(candidates, 6)):
-        print('#{}. Checking if {} is {}-cyclic and has {} polygonal representatives: '.format(i, int_set, d, poly_reps), end='')
+        print('\t#{}. Checking if {} is {}-cyclic and has {} polygonal representatives: '.format(i, int_set, d, poly_reps), end='')
         is_d_cyclic = is_d_cyclic_set(int_set, 2)
         has_poly_reps = is_polygonal_representative_set(int_set, poly_reps)
         if is_d_cyclic and has_poly_reps:
@@ -62,7 +66,7 @@ if __name__ == '__main__':
 
     print(
         'The set {} is {}-cyclic and {}-polygonal representative, and it has the sum {}'
-        .format(result_set, d, poly_reps, sum(result_set))
+        .format(result_set, d, poly_reps, sum(result_et))
     )
 
 
