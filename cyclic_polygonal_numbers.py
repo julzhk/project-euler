@@ -23,11 +23,17 @@
 #    different number in the set.
 #    3. This is the only set of 4-digit numbers with this property.
 #
-# Find the sum of the only ordered set of six cyclic 4-digit numbers for which
-# each polygonal type: triangle, square, pentagonal, hexagonal, heptagonal, and
-# octagonal, is represented by a different number in the set.
+# The Project Eulier problem of finding the a 2-cyclic set of six 4-digit
+# integers which contains exactly one number each of type triangular, square,
+# pentagonal, hexagonal, heptagonal, and octagonal, is computationally out of
+# bounds (there are approximately 943 billion candidates). So I've chosen here
+# to implement the search for a 2-cyclic set of three 4-digit integers which
+# contains exactly one each of type triangular, square and pentagonal, which is
+# the example given above.
 
 from itertools import combinations
+
+from math import factorial
 
 from utils import (
     is_d_cyclic_set,
@@ -38,24 +44,30 @@ from utils import (
 from time import sleep
 
 if __name__ == '__main__':
-    print(
-        'Searching for a 2-cyclic set of six 4-digit integers which is '
-        '{3,4,5,6,7,8}-polygonal representative ...'
-    )
-    sleep(3)
-    print(
-        '\nThis could take a while as there are 943,566,389766 (approx. 9.43 '
-        'billion) 4-digit integer sets containing triangular, square, '
-        'pentagonal, hexagonal, heptagonal or octagonal numbers.\n'
-    )
-    sleep(3)
-    d = 2
-    poly_reps = set(range(3, 9))
-    candidates = (m for m in range(10**3, 10**4) if any(is_polygonal_number(m, n) for n in poly_reps))
+    k = 3   # no. of integers in the result set
+    v = 4   # number of digits in each integer
+    d = 2   # degree of cyclicity of the set, e.g. 2-cyclic, 3-cyclic etc.
+    poly_reps = {3, 4, 5}  # the type or degree of polynomial numbers to search for
+    candidates = [m for m in range(10**3, 10**4) if any(is_polygonal_number(m, n) for n in poly_reps)]
+    c = len(candidates)
+    s = int(factorial(c) / (factorial(k)*factorial(c-k)))
     result_set = None
-    for i, int_set in enumerate(combinations(candidates, 6)):
-        print('\t#{}. Checking if {} is {}-cyclic and has {} polygonal representatives: '.format(i, int_set, d, poly_reps), end='')
-        is_d_cyclic = is_d_cyclic_set(int_set, 2)
+    print(
+        '\nSearching for a {}-cyclic set of {} {}-digit integers which is '
+        '{}-polygonal representative ...\n'.format(d, k, v, poly_reps)
+    )
+    sleep(3)
+
+    print(
+        '\nThis could take a while as there are {} sets of three '
+        '4-digit integers, each containing a triangular, square or pentagonal '
+        'number.\n'.format(s)
+    )
+    sleep(3)
+    
+    for i, int_set in enumerate(combinations(candidates, 3)):
+        print('\t#{}. Checking if {} is {}-cyclic and {}-polygonal representative: '.format(i, int_set, d, poly_reps), end='')
+        is_d_cyclic = is_d_cyclic_set(int_set, d)
         has_poly_reps = is_polygonal_representative_set(int_set, poly_reps)
         if is_d_cyclic and has_poly_reps:
             result_set = int_set
@@ -64,9 +76,14 @@ if __name__ == '__main__':
         else:
             print('NO: {}-cyclic={}, is {}-polygonal representative={}'.format(d, is_d_cyclic, poly_reps, has_poly_reps))
 
+    sleep(3)
+    if result_set:
+        result_set = sorted(result_set)
+        tr, sq, pn = (m for m in result_set if any(is_polygonal_number(m, n) for n in poly_reps))
     print(
-        'The set {} is {}-cyclic and {}-polygonal representative, and it has the sum {}'
-        .format(result_set, d, poly_reps, sum(result_et))
+        '\nThe set {} is {}-cyclic and {}-polygonal representative: {} is '
+        'triangular, {} is square, {} is pentagonal.'
+        .format(set(result_set), d, poly_reps, tr, sq, pn)
     )
 
 
