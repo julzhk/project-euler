@@ -16,8 +16,8 @@ def digits(n, reverse=False):
             123 -> 3, 2, 1      (with reverse=True)
     """
     s = str(n) if not reverse else str(n)[::-1]
-    for c in s:
-        yield int(c)
+    for d in s:
+        yield int(d)
 
 
 def int_from_digits(digits):
@@ -214,7 +214,7 @@ def is_d_cyclic_set(int_seq, d):
     """
     m = len(int_seq)
     for p in permutations(int_seq):
-        if all(str(p[i])[-d:] == str(p[(i+1) % m])[:d] for i in range(m)):
+        if all(str(p[i])[-d:] == str(p[(i + 1) % m])[:d] for i in range(m)):
             return True
     return False
 

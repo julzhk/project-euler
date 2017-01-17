@@ -85,11 +85,3 @@ if __name__ == '__main__':
         'triangular, {} is square, {} is pentagonal.'
         .format(set(result_set), d, poly_reps, tr, sq, pn)
     )
-
-
-
-
-
-
-
-
