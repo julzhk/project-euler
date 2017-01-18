@@ -122,6 +122,39 @@ def primes(index_range=None, int_range=None):
         n += 1
 
 
+def prime_factors(n, multiplicities=False):
+    """
+        Generates the distinct prime factors of a positive integer n in an
+        ordered sequence. If the 'multiplicities' option is True then it
+        generates pairs of prime factors of n and their multiplicities
+        (highest p-power dividing n for a given prime factor p), e.g. for
+        n = 54 = 2^1 x 3^3 we have
+
+            54 -> 2, 3
+            54, multiplicities=True -> (2, 1), (3, 3)
+
+        This is precisely the prime factorisation of n.
+    """
+    if n == 1:
+        return
+
+    if is_prime(n):
+        if not multiplicities:
+            yield n
+        else:
+            yield n, 1
+        return
+
+    pf = (p for p in primes(int_range=range(2, math.ceil(math.sqrt(n)))) if n % p == 0)
+    if not multiplicities:
+        for p in pf:
+            yield p
+    else:
+        pfm = ((p, max(e for e in reversed(range(1, math.ceil(math.log(n, p)))) if n % p**e == 0)) for p in pf)
+        for p, m in pfm:
+            yield p, m
+
+
 def fibonacci():
     """
         Generates the Fibonacci sequence defined by
